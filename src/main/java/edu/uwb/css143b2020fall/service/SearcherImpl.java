@@ -24,14 +24,20 @@ public class SearcherImpl implements Searcher {
                 for (int c = 0; c < index.get(words[b]).size(); c++) {
                     tempWords.add(index.get(words[b]).get(c));
                 }
-                allWords.put(words[b], tempWords);
+                if (allWords.containsKey(words[b])) {
+                    allWords.put(words[b] + "1", tempWords);
+                } else {
+                    allWords.put(words[b], tempWords);
+                }
             } else {
-                allWords.put(words[b], emptyWords);
+                if (allWords.containsKey(words[b])) {
+                    allWords.put(words[b] + "1", tempWords);
+                } else {
+                    allWords.put(words[b], tempWords);
+                }
             }
         }
 
-        Map<Integer, List<Integer>> allDocs1 = new HashMap<>();
-        Map<Integer, List<Integer>> allDocs2 = new HashMap<>();
         List<List<Integer>> firstWord = allWords.get(words[0]);
 
         //if one key word
@@ -49,6 +55,8 @@ public class SearcherImpl implements Searcher {
         //if more than 1 key word
         if (allWords.size() > 1) {
             for (int g = 1; g < allWords.size(); g++) {
+                Map<Integer, List<Integer>> allDocs1 = new HashMap<>();
+                Map<Integer, List<Integer>> allDocs2 = new HashMap<>();
                 for (int h = 0; h < allWords.get(words[0]).size(); h++) {
                         if (allWords.get(words[0]).get(h) != null && allWords.get(words[g]).get(h) != null) {
                             if (!(allWords.get(words[0]).get(h).isEmpty()) && !(allWords.get(words[g]).get(h).isEmpty())) {
@@ -74,15 +82,27 @@ public class SearcherImpl implements Searcher {
                         }
                         for (int m = 0; m < allDocs2Array.size(); m++) {
                             int second = (int) allDocs2Array.get(m);
-                            second = second - 1;
+                            second = second - g;
                             for (int o = 0; o < allDocs1Array.size(); o++) {
                                 if (second == (int) allDocs1Array.get(o)) {
-                                    result.add(k);
+                                    if (!(result.contains(k))) {
+                                        result.add(k);
+                                    }
                                     allDocs1Array = new LinkedList();
                                     allDocs2Array = new LinkedList();
+                                } else {
+                                    if (result.contains(k)) {
+                                        result.remove(k);
+                                    }
                                 }
                             }
                         }
+                    }
+                }
+                for (int z = 0; z < result.size(); z++) {
+                    if (!(allDocs1.containsKey(result.get(z)))) {
+                        result.remove(z);
+                        z--;
                     }
                 }
             }
@@ -95,30 +115,26 @@ public class SearcherImpl implements Searcher {
 }
 
 /*
-for (int d = 1; d < allWords.size(); d++) {
-                List<List<Integer>> secondWord = allWords.get(words[d]);
-                for (int e = 0; e < firstWord.size(); e++) {
-                    if (firstWord.get(e) != null && secondWord.get(e) != null) {
-                        if (!(firstWord.get(e).isEmpty()) && !(secondWord.get(e).isEmpty())) {
-                            allDocs1.put(e, firstWord.get(e));
-                            allDocs2.put(e, secondWord.get(e));
-                        }
-                    }
+Map<String, List<List<Integer>>> allWords = new HashMap<>();
+
+        // empty list for if the word isnt in the index
+        LinkedList emptyWords = new LinkedList();
+        for(int a = 0; a < index.get("hello").size(); a++) {
+            emptyWords.add(null);
+        }
+
+        //store all instances of each search word
+        for (int b = 0; b < words.length; b++) {
+            LinkedList tempWords = new LinkedList();
+            if (index.containsKey(words[b])) {
+                for (int c = 0; c < index.get(words[b]).size(); c++) {
+                    tempWords.add(index.get(words[b]).get(c));
                 }
+                allWords.put(words[b], tempWords);
+            } else {
+                allWords.put(words[b], emptyWords);
             }
-            LinkedList firstList = new LinkedList();
-            LinkedList secondList = new LinkedList();
-            for (int h = 0; h < allDocs2.size(); h++) {
-                System.out.println(allDocs2.size());
-                if (allDocs2.get(h) != null) {
-                    for (int i = 0; i < allDocs2.get(h).size(); i++) {
-
-                    }
-                }
-            }
-
-
-            return result;
+        }
  */
 
 
