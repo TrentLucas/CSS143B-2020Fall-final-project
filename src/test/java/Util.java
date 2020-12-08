@@ -112,6 +112,16 @@ public class Util {
         return index;
     }
 
+    public static List<String> getDocumentsForIntTest2() {
+        return new ArrayList<>(
+                Arrays.asList(
+                        "hello to the entire world and every other planet in the solar system",
+                        "hello to the world",
+                        "      hello      to      the      entire     world"
+                )
+        );
+    }
+
     public static List<String> getDocumentsForIntTest() {
         return new ArrayList<>(
                 Arrays.asList(

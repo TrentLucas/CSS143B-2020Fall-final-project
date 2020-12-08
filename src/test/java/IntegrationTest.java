@@ -22,6 +22,53 @@ public class IntegrationTest {
         searcher = new SearcherImpl();
     }
 
+    // extra credit: need 3 new documents and 5 search cases
+    @Test
+    public void testIntegration2() {
+        List<TestCase> cases = getTestCase2();
+        for (TestCase testCase : cases) {
+            List<Integer> actual = searcher.search(
+                    testCase.target,
+                    indexer.index(testCase.documents)
+            );
+            assertEquals(testCase.expect, actual);
+        }
+    }
+
+    private List<TestCase> getTestCase2() {
+        List<String> documents = Util.getDocumentsForIntTest2();
+
+        List<TestCase> testCases = new ArrayList<>(Arrays.asList(
+                new TestCase(
+                        documents,
+                        " ",
+                        Util.emptyResult()
+                ),
+                new TestCase(
+                        documents,
+                        "worlds",
+                        Util.emptyResult()
+                ),
+                new TestCase(
+                        documents,
+                        "entire and",
+                        Util.emptyResult()
+                ),
+                new TestCase(
+                        documents,
+                        "entire world",
+                        new ArrayList<>(Arrays.asList(0, 2))
+                ),
+                new TestCase(
+                        documents,
+                        "hello",
+                        new ArrayList<>(Arrays.asList(0, 1, 2))
+                )
+        ));
+
+        return testCases;
+    }
+
     @Test
     public void testIntegration() {
         List<TestCase> cases = getTestCase();
