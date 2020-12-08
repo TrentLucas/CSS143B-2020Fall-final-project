@@ -11,42 +11,43 @@ public class IndexerImpl implements Indexer {
         LinkedList allWords = new LinkedList();
 
         //gather every word in all docs
-        for (int i = 0; i < docs.size(); i++) {
-            String doc = docs.get(i);
+        for (int a = 0; a < docs.size(); a++) {
+            String doc = docs.get(a);
             String[] words = doc.split("\\s+");
 
-            for (int j = 0; j < words.length; j++) {
-                if (!allWords.contains(words[j]) && !words[j].equals("")) {
-                    allWords.add(words[j]);
+            for (int b = 0; b < words.length; b++) {
+                if (!allWords.contains(words[b]) && !words[b].equals("")) {
+                    allWords.add(words[b]);
                 }
             }
         }
 
         //add values to words              word -> document -> location
-        for (int k = 0; k < allWords.size(); k++) {
+        for (int c = 0; c < allWords.size(); c++) {
             List<List<Integer>> allDocs = new ArrayList();
-            for (int l = 0; l < docs.size(); l++) {
+
+            for (int d = 0; d < docs.size(); d++) {
                 List<Integer> tempDoc = new ArrayList();
-                String doc = docs.get(l);
+                String doc = docs.get(d);
                 String[] words = doc.split("\\s+");
-                LinkedList wordsNew = new LinkedList();
+                LinkedList tempDocWords = new LinkedList();
 
                 //remove empty splits
-                for (int z = 0; z < words.length; z++) {
-                    if (!(words[z].equals(""))) {
-                        wordsNew.add(words[z]);
+                for (int e = 0; e < words.length; e++) {
+                    if (!(words[e].equals(""))) {
+                        tempDocWords.add(words[e]);
                     }
                 }
 
-                //set tempdoc to values
-                for (int n = 0; n < wordsNew.size(); n++) {
-                    if (allWords.get(k).equals(wordsNew.get(n))) {
-                        tempDoc.add(n);
+                //set tempDoc to values
+                for (int f = 0; f < tempDocWords.size(); f++) {
+                    if (allWords.get(c).equals(tempDocWords.get(f))) {
+                        tempDoc.add(f);
                     }
                 }
                 allDocs.add(tempDoc);
             }
-            indexes.put((String) allWords.get(k), allDocs);
+            indexes.put((String) allWords.get(c), allDocs);
         }
 
         return indexes;
